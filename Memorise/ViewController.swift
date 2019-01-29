@@ -8,13 +8,27 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class ViewController: UITableViewController {
+    
+    let dataSource = MemoryDataSource()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        tableView.dataSource = dataSource
     }
-
-
+    
+    // Left inside VC as it is delegate and usually delegate is part of user interaction!!
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let vc = storyboard?.instantiateViewController(withIdentifier: "MemoryViewController") as? MemoryViewController else {
+            fatalError("Unable to instatatioate Memory View Controller")
+        }
+        
+//        let item = dataSource.items[indexPath.row] // Disgusting way to do it
+        let item = dataSource.item(at: indexPath.row)
+        vc.item = item
+        
+        navigationController?.pushViewController(vc, animated: true)
+        
+    }
+    
 }
-
